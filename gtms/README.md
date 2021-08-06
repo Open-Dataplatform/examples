@@ -68,6 +68,9 @@ guid = <dataset-guid>
 ### Horizon: None
 To access the data from a dataset with no Horizon use the following code.
 ``` python
+from osiris.apis.egress import Egress
+from configparser import ConfigParser
+
 config = ConfigParser()
 config.read('conf.ini')
 
@@ -84,6 +87,9 @@ The code will return all the available data.
 ### Horizon: Daily
 To access the data from a dataset with daily Horizon use the following code.
 ``` python
+from osiris.apis.egress import Egress
+from configparser import ConfigParser
+
 config = ConfigParser()
 config.read('conf.ini')
 
@@ -100,6 +106,9 @@ The code will get all data from 2021-01-01 to 2021-01-03. Modify the dates to ge
 ### Horizon: Monthly
 To access the data from a dataset with monthly Horizon use the following code.
 ``` python
+from osiris.apis.egress import Egress
+from configparser import ConfigParser
+
 config = ConfigParser()
 config.read('conf.ini')
 
