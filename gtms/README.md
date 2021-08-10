@@ -29,8 +29,8 @@ The GTMS data consists of the following datasets.
 | GT Biocertificate BI    | Daily   | GASDAY         | 2020-01-01 | enabled  | Partial      | Missing from 2021-07-01 -> |
 | GT DATA H BI            | Monthly | GASDAY         | 2004-01    | enabled  | Partial      | Missing data throughout (140 months) |
 | GT Nom BI               | Daily   | GASDAY         | 2009-01-01 | enabled  | Partial      | Missing from 2021-07-12 -> |
-| GT Player BI            | None    |                |            |          |              | |
-| GT Point BI             | None    |                |            |          |              | |
+| GT Player BI            | None    | REV_DATE       |            | enabled  |              | |
+| GT Point BI             | None    | REV_DATE       |            | enabled  |              | |
 | GT Contract Capacity BI | Monthly | TO_HOUR_UTC(?) | 2006-04    |          | Partial      | Missing data, Only new format from 2021-06 -> |
 | GT Time BI              | Monthly | ACTUAL_TIME(?) | 2009-01    |          | Partial      | Data from 2009-2044 (New format 2021-05 -> present day) |
 | GT Trade BI             | Monthly | CREATED_DATE(?)| 2009-01    |          | Partial      | Data from 2009-2044 (New format 2021-05 -> 2021-07) |
