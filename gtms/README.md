@@ -23,20 +23,20 @@ The GTMS data consists of the following datasets.
 
 ## Overview
 
-| Name                    | Horizon | Index          | Start Date | Data Quality | Notes       |
-| ----------------------- | ------- | -------------- | ---------- | ------------ | ----------- |
-| GT Invoice Lines BI     | Monthly | GASMONTH       | 2004-01    | Full         | |
-| GT Biocertificate BI    | Daily   | GASDAY         | 2020-01-01 | Partial      | Missing from 2021-07-01 -> |
-| GT DATA H BI            | Monthly | GASDAY         | 2004-01    | Partial      | Missing data throughout (140 months) |
-| GT Nom BI               | Daily   | GASDAY         | 2009-01-01 | Partial      | Missing from 2021-07-12 -> |
-| GT Player BI            | None    |                |            |              | |
-| GT Point BI             | None    |                |            |              | |
-| GT Contract Capacity BI | Monthly | TO_HOUR_UTC(?) | 2006-04    | Partial      | Missing data, Only new format from 2021-06 -> |
-| GT Time BI              | Monthly | ACTUAL_TIME(?) | 2009-01    | Partial      | Data from 2009-2044 (New format 2021-05 -> present day) |
-| GT Trade BI             | Monthly | CREATED_DATE(?)| 2009-01    | Partial      | Data from 2009-2044 (New format 2021-05 -> 2021-07) |
-| GT Balance System BI    | Monthly | GASDAY         | 2014-10    | Full         | |
-| GT Alloc BI             | Daily   | GASDAY         | 2004-01-01 | Full         | |
-
+| Name                    | Horizon | Index          | Start Date | TEST API | Data Quality | Notes       |
+| ----------------------- | ------- | -------------- | ---------- | -------- | ------------ | ----------- |
+| GT Invoice Lines BI     | Monthly | GASMONTH       | 2004-01    | enabled  | Full         | |
+| GT Biocertificate BI    | Daily   | GASDAY         | 2020-01-01 | enabled  | Partial      | Missing from 2021-07-01 -> |
+| GT DATA H BI            | Monthly | GASDAY         | 2004-01    | enabled  | Partial      | Missing data throughout (140 months) |
+| GT Nom BI               | Daily   | GASDAY         | 2009-01-01 | enabled  | Partial      | Missing from 2021-07-12 -> |
+| GT Player BI            | None    |                |            |          |              | |
+| GT Point BI             | None    |                |            |          |              | |
+| GT Contract Capacity BI | Monthly | TO_HOUR_UTC(?) | 2006-04    |          | Partial      | Missing data, Only new format from 2021-06 -> |
+| GT Time BI              | Monthly | ACTUAL_TIME(?) | 2009-01    |          | Partial      | Data from 2009-2044 (New format 2021-05 -> present day) |
+| GT Trade BI             | Monthly | CREATED_DATE(?)| 2009-01    |          | Partial      | Data from 2009-2044 (New format 2021-05 -> 2021-07) |
+| GT Balance System BI    | Monthly | GASDAY         | 2014-10    | enabled  | Full         | |
+| GT Alloc BI             | Daily   | GASDAY         | 2004-01-01 | enabled  | Full         | |
+ 
 
 ## Retrieve data
 
