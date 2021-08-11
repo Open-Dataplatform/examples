@@ -33,7 +33,7 @@ The GTMS data consists of the following datasets.
 | GT Point BI             | None    | REV_DATE       |            | enabled  |              | |
 | GT Contract Capacity BI | Monthly | CREATED_DATE   | 2006-04    | enabled  | Partial      | Missing data, Only new format from 2021-06 -> |
 | GT Time BI              | Monthly | ACTUAL_TIME(?) | 2009-01    |          | Partial      | Data from 2009-2044 (New format 2021-05 -> present day) |
-| GT Trade BI             | Monthly | CREATED_DATE(?)| 2009-01    |          | Partial      | Data from 2009-2044 (New format 2021-05 -> 2021-07) |
+| GT Trade BI             | Monthly | GASDAY         | 2009-01    | enabled  | Partial      | Data from 2009-2044 (New format 2021-05 -> 2021-07) |
 | GT Balance System BI    | Monthly | GASDAY         | 2014-10    | enabled  | Full         | |
 | GT Alloc BI             | Daily   | GASDAY         | 2004-01-01 | enabled  | Full         | |
  
