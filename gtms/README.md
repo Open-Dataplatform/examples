@@ -3,7 +3,8 @@
 - [Overview](#overview)
 - [Retrieve data](#retrieve-data)
   - [Installation and Config file](#installation-and-config-file)
-  - [Horizon: None](#retrieve-data-from-a-range)
+  - [Retrieve Data from a Date Range](#retrieve-data-from-a-date-range)
+  - [Retrieve full data](#retrieve-full-data)
  
 ## Datasets
 The GTMS data consists of the following datasets.
@@ -61,7 +62,7 @@ client_secret = <client_secret>
 guid = <dataset-guid>
 ```
 
-### Retrieve data from a range
+### Retrieve data from a date range
 To access the data from a dataset with no Horizon use the following code.
 ``` python
 import requests
@@ -98,3 +99,29 @@ Examples:
 | 2014-01-01       | 2014-01-04       | 2014-01-01T00:00 to 2014-01-04T23:59:59.9999 |
 | 2014-01          | 2014-04          | 2014-01-01T00:00 to 2014-03-31T23:59:59.9999 |
 | 2014             | 2016             | 2014-01-01T00:00 to 2015-12-31T23:59:59.9999 |
+
+### Retrieve full data
+The datasets with Horizon NONE (in the table above) can retrieve all data stored.
+The example below shows how this can be done.
+``` python
+import requests
+from osiris.core.azure_client_authorization import ClientAuthorization
+from configparser import ConfigParser
+
+config = ConfigParser()
+config.read('conf.ini')
+
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+guid = config['Dataset']['guid']
+
+response = requests.get(
+    url=f'https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/{guid}/test_json',
+    headers={'Authorization': client_auth.get_access_token()}
+)
+
+print(response.status_code)
+print(response.json())
+```
