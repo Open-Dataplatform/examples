@@ -25,7 +25,7 @@ def example_gtms_date_range():
 
     response = requests.get(
         url=f'https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/{guid}/test_json',
-        params={'from_date': '2014-01', 'to_date': '2015-05'},
+        params={'from_date': '2014', 'to_date': '2015'},
         headers={'Authorization': client_auth.get_access_token()}
     )
 
