@@ -7,10 +7,9 @@ This example is to demonstrate how to access the DMI dataset.
 
 ## Retrieve data
 
-The way to access data depends on the structure of how data is stored.
-There are 3 different structures given in the Horizon column.
-Below we will go through the general setup and each of the 3 cases.
-The full code is available here in the repo.
+This section describes how to retrieve data from the DMI sources from the Egress API.
+
+Notice: When the Osiris-SDK is updated to version 1.0 it will become easier.
 
 ### Config file
 First step is to install the Osiris-SDK to access data.

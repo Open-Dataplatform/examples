@@ -3,10 +3,8 @@
 - [Overview](#overview)
 - [Retrieve data](#retrieve-data)
   - [Installation and Config file](#installation-and-config-file)
-  - [Horizon: None](#horizon:-one)
-  - [Horizon: Daily](#horizon:-daily)
-  - [Horizon: Monthly](#horizon:-monthly)
-
+  - [Horizon: None](#retrieve-data-from-a-range)
+ 
 ## Datasets
 The GTMS data consists of the following datasets.
 - [GT Invoice Lines BI](https://dataplatform.energinet.dk/detail/471d3e34-b843-4298-fc34-08d8b6fedea4)
@@ -40,12 +38,11 @@ The GTMS data consists of the following datasets.
 
 ## Retrieve data
 
-The way to access data depends on the structure of how data is stored.
-There are 3 different structures given in the Horizon column.
-Below we will go through the general setup and each of the 3 cases.
-The full code is available here in the repo.
+This section describes how to retrieve data from the GTMS sources from the Egress API.
 
-### Installation and Config file
+Notice: When the Osiris-SDK is updated to version 1.0 it will become easier.
+
+### Config file
 First step is to install the Osiris-SDK to access data.
 ``` shell
 $ pip install osiris-sdk
@@ -60,64 +57,44 @@ tenant_id = <tenant_id>
 client_id = <client_id>
 client_secret = <client_secret>
 
-[Egress API]
-url = <url to egress-api>
+[Dataset]
 guid = <dataset-guid>
 ```
 
-### Horizon: None
+### Retrieve data from a range
 To access the data from a dataset with no Horizon use the following code.
 ``` python
-from osiris.apis.egress import Egress
+import requests
+from osiris.core.azure_client_authorization import ClientAuthorization
 from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress API']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'],
-                dataset_guid=config['Egress API']['guid'])
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
 
-json_data = egress.download_json_file()
+guid = config['Dataset']['guid']
+
+response = requests.get(
+    url=f'https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/{guid}/test_json',
+    params={'from_date': '2014-01', 'to_date': '2014-04'},
+    headers={'Authorization': client_auth.get_access_token()}
+)
+
+print(response.status_code)
+print(response.json())
 ```
-The code will return all the available data.
+The code will return all the available data between *from_date* (inclusive) to *to_date* (exclusive).
 
-### Horizon: Daily
-To access the data from a dataset with daily Horizon use the following code.
-``` python
-from osiris.apis.egress import Egress
-from configparser import ConfigParser
+Examples:
 
-config = ConfigParser()
-config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress API']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'],
-                dataset_guid=config['Egress API']['guid'])
-
-json_data = egress.download_json_file('2021-01-01', '2021-01-03')
-```
-The code will get all data from 2021-01-01 to 2021-01-03. Modify the dates to get a different time frame.
-
-### Horizon: Monthly
-To access the data from a dataset with monthly Horizon use the following code.
-``` python
-from osiris.apis.egress import Egress
-from configparser import ConfigParser
-
-config = ConfigParser()
-config.read('conf.ini')
-
-egress = Egress(egress_url=config['Egress API']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'],
-                dataset_guid=config['Egress API']['guid'])
-
-json_data = egress.download_json_file('2021-06', '2021-08')
-```
-The code will get all data from 2021-06 to 2021-08. Modify the dates to get a different time frame.
+| from_date        | to_date          | interval                                     |
+| ---------------- | ---------------- | -------------------------------------------- |
+| 2014-01-01T01:01 | 2014-01-01T01:06 | 2014-01-01T01:01 to 2014-01-01T01:05:59.9999 |
+| 2014-01-01T01    | 2014-01-01T04    | 2014-01-01T01:00 to 2014-01-01T03:59:59.9999 |
+| 2014-01-01       | 2014-01-04       | 2014-01-01T00:00 to 2014-01-04T23:59:59.9999 |
+| 2014-01          | 2014-04          | 2014-01-01T00:00 to 2014-03-31T23:59:59.9999 |
+| 2014             | 2016             | 2014-01-01T00:00 to 2015-12-31T23:59:59.9999 |

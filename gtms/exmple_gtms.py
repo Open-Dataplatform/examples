@@ -1,4 +1,5 @@
-from osiris.apis.egress import Egress
+import requests
+from osiris.core.azure_client_authorization import ClientAuthorization
 from configparser import ConfigParser
 
 
@@ -12,52 +13,25 @@ def print_description(json_data):
             print(f'  {field_name:30} {field_example}')
 
 
-def example_gtms_daily():
+def example_gtms_data():
     config = ConfigParser()
     config.read('conf.ini')
 
-    egress = Egress(egress_url=config['Egress API']['url'],
-                    tenant_id=config['Authorization']['tenant_id'],
-                    client_id=config['Authorization']['client_id'],
-                    client_secret=config['Authorization']['client_secret'],
-                    dataset_guid=config['Egress API']['guid'])
+    client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                      client_id=config['Authorization']['client_id'],
+                                      client_secret=config['Authorization']['client_secret'])
 
-    json_data = egress.download_json_file('2021-01-01', '2021-01-02')
+    guid = config['Dataset']['guid']
 
-    print_description(json_data)
+    response = requests.get(
+        url=f'https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/{guid}/test_json',
+        params={'from_date': '2014-01', 'to_date': '2015-05'},
+        headers={'Authorization': client_auth.get_access_token()}
+    )
 
-
-def example_gtms_monthly():
-    config = ConfigParser()
-    config.read('conf.ini')
-
-    egress = Egress(egress_url=config['Egress API']['url'],
-                    tenant_id=config['Authorization']['tenant_id'],
-                    client_id=config['Authorization']['client_id'],
-                    client_secret=config['Authorization']['client_secret'],
-                    dataset_guid=config['Egress API']['guid'])
-
-    json_data = egress.download_json_file('2021-06', '2021-08')
-
-    print_description(json_data)
-
-
-def example_gtms_no_horizon():
-    config = ConfigParser()
-    config.read('conf.ini')
-
-    egress = Egress(egress_url=config['Egress API']['url'],
-                    tenant_id=config['Authorization']['tenant_id'],
-                    client_id=config['Authorization']['client_id'],
-                    client_secret=config['Authorization']['client_secret'],
-                    dataset_guid=config['Egress API']['guid'])
-
-    json_data = egress.download_json_file()
-
-    print_description(json_data)
+    print(response.status_code)
+    print_description(response.json())
 
 
 if __name__ == '__main__':
-    # example_gtms_monthly()
-    example_gtms_no_horizon()
-    # example_gtms_daily()
+    example_gtms_data()
