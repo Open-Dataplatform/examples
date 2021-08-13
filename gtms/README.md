@@ -58,34 +58,27 @@ tenant_id = <tenant_id>
 client_id = <client_id>
 client_secret = <client_secret>
 
-[Dataset]
+[Egress]
+url = <egress-url>
 guid = <dataset-guid>
 ```
 
 ### Retrieve data from a date range
 To access the data from a dataset with no Horizon use the following code.
 ``` python
-import requests
-from osiris.core.azure_client_authorization import ClientAuthorization
+from osiris.apis.egress import Egress
 from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
-                                  client_id=config['Authorization']['client_id'],
-                                  client_secret=config['Authorization']['client_secret'])
+egress = Egress(egress_url=config['Egress']['url'],
+                tenant_id=config['Authorization']['tenant_id'],
+                client_id=config['Authorization']['client_id'],
+                client_secret=config['Authorization']['client_secret'],
+                dataset_guid=config['Egress']['guid'])
 
-guid = config['Dataset']['guid']
-
-response = requests.get(
-    url=f'https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/{guid}/test_json',
-    params={'from_date': '2014-01', 'to_date': '2014-04'},
-    headers={'Authorization': client_auth.get_access_token()}
-)
-
-print(response.status_code)
-print(response.json())
+json_response = egress.download_json_file('2014', '2015')
 ```
 The code will return all the available data between *from_date* (inclusive) to *to_date* (exclusive).
 
@@ -104,24 +97,17 @@ Examples:
 The datasets with Horizon NONE (in the table above) can retrieve all data stored.
 The example below shows how this can be done.
 ``` python
-import requests
-from osiris.core.azure_client_authorization import ClientAuthorization
+from osiris.apis.egress import Egress
 from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
-                                  client_id=config['Authorization']['client_id'],
-                                  client_secret=config['Authorization']['client_secret'])
+egress = Egress(egress_url=config['Egress']['url'],
+                tenant_id=config['Authorization']['tenant_id'],
+                client_id=config['Authorization']['client_id'],
+                client_secret=config['Authorization']['client_secret'],
+                dataset_guid=config['Egress']['guid'])
 
-guid = config['Dataset']['guid']
-
-response = requests.get(
-    url=f'https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/{guid}/test_json',
-    headers={'Authorization': client_auth.get_access_token()}
-)
-
-print(response.status_code)
-print(response.json())
+json_response = egress.download_json_file()
 ```
