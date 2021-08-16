@@ -40,7 +40,7 @@ def example_delfin_minutely():
                     client_id=config['Authorization']['client_id'],
                     client_secret=config['Authorization']['client_secret'])
 
-    json_content = egress.download_delfin_file(Horizon.MINUTELY, "2021-01-02T00", "2021-01-04T06")
+    json_content = egress.download_delfin_file(Horizon.MINUTELY, "2021-07-15T00:00", "2021-07-15T00:59")
 
     print(json_content)
 
