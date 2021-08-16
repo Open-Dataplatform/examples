@@ -5,7 +5,7 @@ This example is to demonstrate how to access the DMI dataset.
 
 - [Neptun Daily](https://dataplatform.energinet.dk/detail/5466d7cc-77cb-4cd1-1155-08d925bcbaf2)
 - [Neptun Hourly](https://dataplatform.energinet.dk/detail/0d80b6fc-fcfb-4848-1153-08d925bcbaf2)
-- [Neptun Minutely](https://dataplatform.energinet.dk/detail/0d80b6fc-fcfb-4848-1153-08d925bcbaf2)
+- [Neptun Minutely](https://dataplatform.energinet.dk/detail/49408b8e-54fd-4d78-115d-08d925bcbaf2)
 
 ## Retrieve data
 
@@ -61,3 +61,21 @@ Examples:
 
 The available horizons are **Horizon.DAILY**, **Horizon.HOURLY**, and **Horizon.MINUTELY**.
 
+### Get Neptun data with specific tags
+The code will return data with one of the given tags.
+``` python
+from osiris.apis.egress import Egress
+from configparser import ConfigParser
+from osiris.core.enums import Horizon
+
+config = ConfigParser()
+config.read('conf.ini')
+
+egress = Egress(egress_url=config['Egress']['url'],
+                tenant_id=config['Authorization']['tenant_id'],
+                client_id=config['Authorization']['client_id'],
+                client_secret=config['Authorization']['client_secret'])
+
+json_content = egress.download_neptun_file(Horizon.DAILY, "2020-01-15T03:00", "2020-01-16T03:01",
+                                           tags=['MW00001', 'MW00002'])
+```
