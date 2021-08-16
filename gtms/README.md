@@ -41,8 +41,6 @@ The GTMS data consists of the following datasets.
 
 This section describes how to retrieve data from the GTMS sources from the Egress API.
 
-Notice: When the Osiris-SDK is updated to version 1.0 it will become easier.
-
 ### Config file
 First step is to install the Osiris-SDK to access data.
 ``` shell
@@ -83,7 +81,6 @@ json_response = egress.download_json_file('2014', '2015')
 The code will return all the available data between *from_date* (inclusive) to *to_date* (exclusive).
 
 Examples:
-
 
 | from_date        | to_date          | interval                                     |
 | ---------------- | ---------------- | -------------------------------------------- |
