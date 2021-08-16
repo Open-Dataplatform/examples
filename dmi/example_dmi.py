@@ -1,7 +1,6 @@
-import requests
 import pandas as pd
 from io import BytesIO
-from osiris.core.azure_client_authorization import ClientAuthorization
+from osiris.apis.egress import Egress
 from configparser import ConfigParser
 
 
@@ -9,19 +8,14 @@ def example_dmi():
     config = ConfigParser()
     config.read('conf.ini')
 
-    client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
-                                      client_id=config['Authorization']['client_id'],
-                                      client_secret=config['Authorization']['client_secret'])
+    egress = Egress(egress_url=config['Egress']['url'],
+                    tenant_id=config['Authorization']['tenant_id'],
+                    client_id=config['Authorization']['client_id'],
+                    client_secret=config['Authorization']['client_secret'])
 
-    response = requests.get(
-        url='https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/dmi',
-        params={'from_date': '2021-01', 'to_date': '2021-03', 'lon': '15.19', 'lat': '55.00'},
-        headers={'Authorization': client_auth.get_access_token()}
-    )
+    parquet_content = egress.download_dmi_file(15.19, 55.00, '2021-01', '2021-03')
 
-    print(response.status_code)
-
-    result_df = pd.read_parquet(BytesIO(response.content))
+    result_df = pd.read_parquet(BytesIO(parquet_content))
     print(result_df)
 
 
@@ -29,18 +23,14 @@ def example_dmi_list():
     config = ConfigParser()
     config.read('conf.ini')
 
-    client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
-                                      client_id=config['Authorization']['client_id'],
-                                      client_secret=config['Authorization']['client_secret'])
+    egress = Egress(egress_url=config['Egress']['url'],
+                    tenant_id=config['Authorization']['tenant_id'],
+                    client_id=config['Authorization']['client_id'],
+                    client_secret=config['Authorization']['client_secret'])
 
-    response = requests.get(
-        url='https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/dmi_list',
-        params={'from_date': '2021-01'},
-        headers={'Authorization': client_auth.get_access_token()}
-    )
+    station_coord = egress.download_dmi_list('2021-01')
 
-    print(response.status_code)
-    print(response.json())
+    print(station_coord)
 
 
 if __name__ == '__main__':
