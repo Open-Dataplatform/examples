@@ -45,7 +45,23 @@ def example_delfin_minutely():
     print(json_content)
 
 
+def example_delfin_daily_table_indices():
+    config = ConfigParser()
+    config.read('conf.ini')
+
+    egress = Egress(egress_url=config['Egress']['url'],
+                    tenant_id=config['Authorization']['tenant_id'],
+                    client_id=config['Authorization']['client_id'],
+                    client_secret=config['Authorization']['client_secret'])
+
+    json_content = egress.download_delfin_file(Horizon.DAILY, "2020-01-15T03:00", "2020-01-16T03:01",
+                                               table_indices=[1, 2])
+
+    print(json_content)
+
+
 if __name__ == '__main__':
     example_delfin_daily()
     example_delfin_hourly()
     example_delfin_minutely()
+    example_delfin_daily_table_indices()
