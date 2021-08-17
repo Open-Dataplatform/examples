@@ -65,15 +65,18 @@ guid = <dataset-guid>
 To access the data from a dataset with no Horizon use the following code.
 ``` python
 from osiris.apis.egress import Egress
+from osiris.core.azure_client_authorization import ClientAuthorization
 from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'],
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+egress = Egress(client_auth=client_auth,
+                egress_url=config['Egress']['url'],
                 dataset_guid=config['Egress']['guid'])
 
 json_response = egress.download_json_file('2014', '2015')
@@ -95,15 +98,18 @@ The datasets with Horizon NONE (in the table above) can retrieve all data stored
 The example below shows how this can be done.
 ``` python
 from osiris.apis.egress import Egress
+from osiris.core.azure_client_authorization import ClientAuthorization
 from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'],
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+egress = Egress(client_auth=client_auth,
+                egress_url=config['Egress']['url'],
                 dataset_guid=config['Egress']['guid'])
 
 json_response = egress.download_json_file()

@@ -1,4 +1,5 @@
 from osiris.apis.egress import Egress
+from osiris.core.azure_client_authorization import ClientAuthorization
 from configparser import ConfigParser
 
 
@@ -16,10 +17,12 @@ def example_gtms_date_range():
     config = ConfigParser()
     config.read('conf.ini')
 
-    egress = Egress(egress_url=config['Egress']['url'],
-                    tenant_id=config['Authorization']['tenant_id'],
-                    client_id=config['Authorization']['client_id'],
-                    client_secret=config['Authorization']['client_secret'],
+    client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                      client_id=config['Authorization']['client_id'],
+                                      client_secret=config['Authorization']['client_secret'])
+
+    egress = Egress(client_auth=client_auth,
+                    egress_url=config['Egress']['url'],
                     dataset_guid=config['Egress']['guid'])
 
     json_response = egress.download_json_file('2014', '2015')
@@ -31,10 +34,12 @@ def example_gtms_full_data():
     config = ConfigParser()
     config.read('conf.ini')
 
-    egress = Egress(egress_url=config['Egress']['url'],
-                    tenant_id=config['Authorization']['tenant_id'],
-                    client_id=config['Authorization']['client_id'],
-                    client_secret=config['Authorization']['client_secret'],
+    client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                      client_id=config['Authorization']['client_id'],
+                                      client_secret=config['Authorization']['client_secret'])
+
+    egress = Egress(client_auth=client_auth,
+                    egress_url=config['Egress']['url'],
                     dataset_guid=config['Egress']['guid'])
 
     json_response = egress.download_json_file()

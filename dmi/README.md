@@ -36,15 +36,18 @@ To list all the stations coordinates (lon and lat) you can use the following cod
 Notice, that it lists the stations available for a given month.
 ``` python
 from osiris.apis.egress import Egress
+from osiris.core.azure_client_authorization import ClientAuthorization
 from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'])
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+egress = Egress(client_auth=client_auth,
+                egress_url=config['Egress']['url'])
 
 station_coord = egress.download_dmi_list('2021-01')
 ```
@@ -55,15 +58,18 @@ To retrieve data for a given station (specified by lon and lat) use similar code
 which retrieves data for a given date interval.
 ``` python
 from osiris.apis.egress import Egress
-from configparser import ConfigParser
+ffrom osiris.core.azure_client_authorization import ClientAuthorization
+rom configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'])
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+egress = Egress(client_auth=client_auth,
+                egress_url=config['Egress']['url'])
 
 parquet_content = egress.download_dmi_file(15.19, 55.00, '2021-01', '2021-03')
 ```

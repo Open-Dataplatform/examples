@@ -33,17 +33,20 @@ url = <egress-url>
 ### Get data from Netpun
 ``` python
 from osiris.apis.egress import Egress
-from configparser import ConfigParser
+from osiris.core.azure_client_authorization import ClientAuthorization
 from osiris.core.enums import Horizon
+from configparser import ConfigParser
 
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'])
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+egress = Egress(client_auth=client_auth,
+                egress_url=config['Egress']['url'])
 
 json_content = egress.download_neptun_file(Horizon.DAILY, "2020-01", "2020-02")
 ```
@@ -65,16 +68,19 @@ The available horizons are **Horizon.DAILY**, **Horizon.HOURLY**, and **Horizon.
 The code will return data with one of the given tags.
 ``` python
 from osiris.apis.egress import Egress
-from configparser import ConfigParser
+from osiris.core.azure_client_authorization import ClientAuthorization
 from osiris.core.enums import Horizon
+from configparser import ConfigParser
 
 config = ConfigParser()
 config.read('conf.ini')
 
-egress = Egress(egress_url=config['Egress']['url'],
-                tenant_id=config['Authorization']['tenant_id'],
-                client_id=config['Authorization']['client_id'],
-                client_secret=config['Authorization']['client_secret'])
+client_auth = ClientAuthorization(tenant_id=config['Authorization']['tenant_id'],
+                                  client_id=config['Authorization']['client_id'],
+                                  client_secret=config['Authorization']['client_secret'])
+
+egress = Egress(client_auth=client_auth,
+                egress_url=config['Egress']['url'])
 
 json_content = egress.download_neptun_file(Horizon.DAILY, "2020-01-15T03:00", "2020-01-16T03:01",
                                            tags=['MW00001', 'MW00002'])
