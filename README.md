@@ -5,6 +5,24 @@ In the folders you will find examples for the specified type.
 
 ## General notes
 
+### Configuration of Egress
+A egress-url is asked to be specified when configuring the Egress client.
+
+This is done in the **conf.ini** file and added under.
+
+```
+[Egress]
+url = <egress-url>
+```
+
+The url used is the following https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/. 
+
+This results in filling out the **conf.ini** as follows.
+```
+[Egress]
+url = https://dp-prod.westeurope.cloudapp.azure.com/osiris-egress/
+```
+
 ### Date ranges
 Many endpoints take a **from_date** and **to_date** as arguments.
 
